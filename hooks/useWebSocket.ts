@@ -15,6 +15,7 @@ export function useWebSocket(url: string, onMessage: (data: any) => void) {
 
     return () => {
       ws.unsubscribe(onMessage);
+      ws.disconnect(); // QUAN TRỌNG
     };
   }, [url]);
 

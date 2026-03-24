@@ -6,6 +6,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Search, Users, WifiOff } from "lucide-react"
 import { UserCard, type User } from "./UserCard"
+import { useAuthContext } from "@/context/AuthProvider"
 
 interface UserListProps {
   selectedUserId?: number | null
@@ -31,10 +32,12 @@ function UserCardSkeleton() {
 }
 
 export function UserList({ selectedUserId, onSelectUser, token }: UserListProps) {
+  const { user: currentUser } = useAuthContext()
   const [users, setUsers] = useState<User[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [search, setSearch] = useState("")
+  
   
 
   useEffect(() => {
@@ -62,11 +65,13 @@ export function UserList({ selectedUserId, onSelectUser, token }: UserListProps)
     if (token) fetchUsers()
   }, [token])
 
-  const filtered = users.filter(
-    (u) =>
-      (u.user_name || "").toLowerCase().includes(search.toLowerCase()) ||
-      (u.email || "").toLowerCase().includes(search.toLowerCase())
-  )
+  const filtered = users
+    .filter((u) => u.id !== currentUser?.id) // 👈 loại bỏ chính mình
+    .filter(
+      (u) =>
+        (u.user_name || "").toLowerCase().includes(search.toLowerCase()) ||
+        (u.email || "").toLowerCase().includes(search.toLowerCase())
+    )
 
   return (
     <div className="flex flex-col h-full">
@@ -127,6 +132,7 @@ export function UserList({ selectedUserId, onSelectUser, token }: UserListProps)
                 user={user}
                 isSelected={selectedUserId === user.id}
                 onClick={onSelectUser}
+                isSelf={user.id === currentUser?.id}
               />
             ))}
         </div>

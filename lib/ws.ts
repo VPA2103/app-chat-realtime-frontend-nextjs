@@ -9,31 +9,27 @@ class WSClient {
     this.url = url;
   }
 
+  private shouldReconnect = true;
+
   connect() {
     if (this.ws) return;
 
+    this.shouldReconnect = true;
     this.ws = new WebSocket(this.url);
 
-    this.ws.onopen = () => {
-      console.log("WS connected");
-    };
-
-    this.ws.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      this.listeners.forEach((cb) => cb(data));
-    };
-
     this.ws.onclose = () => {
-      console.log("WS disconnected");
       this.ws = null;
 
-      // auto reconnect (optional)
-      setTimeout(() => this.connect(), 2000);
+      if (this.shouldReconnect) {
+        setTimeout(() => this.connect(), 2000);
+      }
     };
+  }
 
-    this.ws.onerror = (err) => {
-      console.error("WS error", err);
-    };
+  disconnect() {
+    this.shouldReconnect = false;
+    this.ws?.close();
+    this.ws = null;
   }
 
   send(data: any) {

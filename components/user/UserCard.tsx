@@ -19,9 +19,10 @@ interface UserCardProps {
   user: User
   isSelected: boolean
   onClick: (user: User) => void
+  isSelf?: boolean
 }
 
-export function UserCard({ user, isSelected, onClick }: UserCardProps) {
+export function UserCard({ user, isSelected, onClick, isSelf }: UserCardProps) {
   const initials = user.user_name
     .split(" ")
     .map((w) => w[0])
@@ -58,6 +59,9 @@ export function UserCard({ user, isSelected, onClick }: UserCardProps) {
         {user.isOnline && (
           <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-emerald-400 ring-2 ring-white dark:ring-slate-900" />
         )}
+        {isSelf && (
+          <span className="text-[10px] text-indigo-400 font-medium">Bạn</span>
+        )}
       </div>
 
       {/* Info */}
@@ -73,6 +77,9 @@ export function UserCard({ user, isSelected, onClick }: UserCardProps) {
           >
             {user.user_name}
           </p>
+          {isSelf && (
+            <span className="text-[10px] text-indigo-400 font-medium">Bạn</span>
+          )}
           {user.lastSeen && (
             <span className="text-[10px] text-slate-400 shrink-0">{user.lastSeen}</span>
           )}
@@ -88,6 +95,7 @@ export function UserCard({ user, isSelected, onClick }: UserCardProps) {
           ) : null}
         </div>
       </div>
+
     </button>
   )
 }
