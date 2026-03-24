@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Settings, LogOut } from "lucide-react";
 
 export default function Dashboard() {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -41,7 +41,15 @@ export default function Dashboard() {
             <Settings className="h-4 w-4" />
             <span className="hidden sm:inline text-xs">Cài đặt</span>
           </Button>
-          <Button variant="ghost" size="sm" className="text-slate-500 hover:text-red-500 gap-1.5">
+          <Button
+            onClick={() => {
+              logout();
+              router.push("/login");
+            }}
+            variant="ghost"
+            size="sm"
+            className="text-slate-500 hover:text-red-500 gap-1.5"
+          >
             <LogOut className="h-4 w-4" />
             <span className="hidden sm:inline text-xs">Đăng xuất</span>
           </Button>

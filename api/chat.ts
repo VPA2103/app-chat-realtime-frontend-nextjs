@@ -1,30 +1,40 @@
-// src/api/chat.ts
+import { fetcher } from "@/lib/fetcher";
+
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+
 export async function sendMessage(
   token: string,
   targetUserID: number,
-  content: string,
+  content: string
 ) {
-  const res = await fetch("/chat/send", {
+  const res = await fetch(`${BASE_URL}/chat/send`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({ target_user_id: targetUserID, content }),
+    body: JSON.stringify({
+      target_user_id: targetUserID,
+      content,
+    }),
   });
 
-  if (!res.ok) throw new Error("Failed to send message");
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`Send failed: ${res.status} - ${text}`);
+  }
+
   return res.json();
 }
 
-export async function getChatHistory(token: string, targetUserID: number) {
+export const getChatHistory = (token: string, targetUserID: number) => {
   const params = new URLSearchParams({
     target_user_id: targetUserID.toString(),
   });
-  const res = await fetch(`/chat/history?${params.toString()}`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
 
-  if (!res.ok) throw new Error("Failed to fetch chat history");
-  return res.json();
-}
+  return fetcher(`/chat/history?${params}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};

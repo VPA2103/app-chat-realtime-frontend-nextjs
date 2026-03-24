@@ -1,19 +1,8 @@
-"use client";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { useAuth } from "@/hooks/useAuth";
+import Dashboard from "@/components/profile/Dashboard";
 
-export default function Dashboard() {
-  const { user } = useAuth();
-  const router = useRouter();
-  console.log("user: ", user)
-  useEffect(() => {
-    if (!user) {
-      router.push("/login");
-    }
-  }, [user, router]);
 
-  if (!user) return <div>Loading...</div>;
+export default function Page() {
 
-  return <div>{user.email}</div>;
+
+  return <div><Dashboard /></div>;
 }

@@ -1,8 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import ChatSidebar from './ChatSidebar';
-import ChatHeader from './ChatHeader';
 import ChatWindow from './ChatWindow';
 import ChatInput from './ChatInput';
 import { useChat } from '@/hooks/useChat';
@@ -35,11 +33,11 @@ export default function ChatLayout({ token, targetUserID }: ChatLayoutProps) {
       </div>
 
       {/* Sidebar */}
-      <ChatSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      {/* <ChatSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} /> */}
 
       {/* Main Chat Area */}
-      <main className="flex-1 flex flex-col min-w-0 relative">
-        <ChatHeader onMenuToggle={() => setSidebarOpen(true)} />
+      <main className="flex-1 flex flex-col min-w-0 relative mb-6">
+        {/* <ChatHeader onMenuToggle={() => setSidebarOpen(true)} /> */}
         <ChatWindow messages={messages} loading={loading} />
         <ChatInput onSend={send} />
       </main>

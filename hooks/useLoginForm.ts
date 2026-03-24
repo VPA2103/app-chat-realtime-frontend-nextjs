@@ -33,6 +33,36 @@ export function useLoginForm(router: ReturnType<typeof useRouter>) {
   };
   const { login } = useAuth();
 
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+
+  //   const validationErrors = validateLoginForm(formData);
+  //   if (hasErrors(validationErrors)) {
+  //     setErrors(validationErrors);
+  //     return;
+  //   }
+
+  //   setFormLoading(true);
+
+  //   try {
+  //     const res = await login({
+  //       email: formData.email,
+  //       password: formData.password,
+  //     });
+  //     if (res.user) {
+  //       router.push("/dashboard"); // redirect ngay khi login thành công
+  //     } else {
+  //       setErrors({ email: { message: "Email hoặc mật khẩu không đúng" } });
+  //     }
+  //   } catch (err: any) {
+  //     setErrors({
+  //       email: { message: err?.message || "Có lỗi xảy ra, thử lại sau" },
+  //     });
+  //   } finally {
+  //     setFormLoading(false);
+  //   }
+  // };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -49,10 +79,13 @@ export function useLoginForm(router: ReturnType<typeof useRouter>) {
         email: formData.email,
         password: formData.password,
       });
+
       if (res.user) {
-        router.push("/dashboard"); // redirect ngay khi login thành công
-      } else {
-        setErrors({ email: { message: "Email hoặc mật khẩu không đúng" } });
+        const callbackUrl =
+          new URLSearchParams(window.location.search).get("callbackUrl") ||
+          "/chat"; // fallback
+
+        router.replace(callbackUrl);
       }
     } catch (err: any) {
       setErrors({
