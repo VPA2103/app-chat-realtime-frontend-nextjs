@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Auth Components — Next.js + TypeScript + Tailwind
 
-## Getting Started
+Bộ component Login/Register hoàn chỉnh, chia tách rõ ràng theo trách nhiệm.
 
-First, run the development server:
+## Cấu trúc thư mục
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+├── app/
+│   └── auth/
+│       └── page.tsx              # Trang auth (route /auth)
+├── components/
+│   ├── auth/
+│   │   ├── AuthCard.tsx          # Card wrapper + tab toggle Login/Register
+│   │   ├── LoginForm.tsx         # Form đăng nhập
+│   │   └── RegisterForm.tsx      # Form đăng ký
+│   └── ui/
+│       ├── Button.tsx            # Button với variant primary/ghost + loading
+│       ├── Divider.tsx           # Divider "hoặc"
+│       ├── InputField.tsx        # Input có label, icon, error
+│       ├── PasswordInput.tsx     # Input mật khẩu có toggle hiển thị
+│       ├── PasswordStrengthBar.tsx # Thanh độ mạnh mật khẩu
+│       └── SocialLoginButtons.tsx  # Nút Google / GitHub OAuth
+├── hooks/
+│   ├── useLoginForm.ts           # State, validation, submit cho login
+│   └── useRegisterForm.ts        # State, validation, submit cho register
+├── lib/
+│   ├── utils.ts                  # cn() helper (clsx + tailwind-merge)
+│   └── validation.ts             # Hàm validate + getPasswordStrength
+└── types/
+    └── auth.ts                   # TypeScript types
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Cài đặt dependencies
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm install clsx tailwind-merge
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Tính năng
 
-## Learn More
+- ✅ Tab toggle mượt mà giữa Login và Register
+- ✅ Validation client-side đầy đủ (email, mật khẩu, confirm, terms)
+- ✅ Hiển thị lỗi từng field khi submit hoặc khi xóa giá trị
+- ✅ Thanh độ mạnh mật khẩu (5 mức)
+- ✅ Toggle hiển thị/ẩn mật khẩu
+- ✅ Loading state khi submit
+- ✅ Success state sau submit
+- ✅ Ghi nhớ đăng nhập (Remember me)
+- ✅ Đồng ý điều khoản với link
+- ✅ Social login (Google, GitHub) — kết nối OAuth tùy dự án
+- ✅ Responsive, dark theme
+- ✅ Accessible (labels, aria, focus rings)
 
-To learn more about Next.js, take a look at the following resources:
+## Tùy chỉnh API
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Trong `hooks/useLoginForm.ts` và `hooks/useRegisterForm.ts`,  
+thay phần `// Simulate API call` bằng fetch thực tế:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```ts
+const res = await fetch("/api/auth/login", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(formData),
+});
+if (!res.ok) throw new Error("Login failed");
+```
