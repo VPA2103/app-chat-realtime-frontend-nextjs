@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { RegisterFormData, RegisterErrors } from "@/types/auth";
 import { hasErrors, validateRegisterForm } from "@/lib/validation/validation";
+import { useAuth } from "./useAuth";
 
 const initialData: RegisterFormData = {
   fullName: "",
@@ -13,6 +14,7 @@ const initialData: RegisterFormData = {
 };
 
 export function useRegisterForm() {
+  const { register } = useAuth();
   const [formData, setFormData] = useState<RegisterFormData>(initialData);
   const [errors, setErrors] = useState<RegisterErrors>({});
   const [isLoading, setIsLoading] = useState(false);
@@ -20,7 +22,7 @@ export function useRegisterForm() {
 
   const updateField = <K extends keyof RegisterFormData>(
     field: K,
-    value: RegisterFormData[K]
+    value: RegisterFormData[K],
   ) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
     if (errors[field as keyof RegisterErrors]) {
@@ -34,6 +36,7 @@ export function useRegisterForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     const validationErrors = validateRegisterForm(formData);
     if (hasErrors(validationErrors)) {
       setErrors(validationErrors);
@@ -42,12 +45,18 @@ export function useRegisterForm() {
 
     setIsLoading(true);
     try {
-      // Simulate API call
-      await new Promise((res) => setTimeout(res, 1800));
+      await register({
+        email: formData.email,
+        password: formData.password,
+      });
+
       setSubmitSuccess(true);
-      console.log("Register submitted:", formData);
-    } catch {
-      setErrors({ email: { message: "Đăng ký thất bại, thử lại sau" } });
+    } catch (err: any) {
+      setErrors({
+        email: {
+          message: err?.response?.data?.error || "Đăng ký thất bại",
+        },
+      });
     } finally {
       setIsLoading(false);
     }
@@ -59,5 +68,13 @@ export function useRegisterForm() {
     setSubmitSuccess(false);
   };
 
-  return { formData, errors, isLoading, submitSuccess, updateField, handleSubmit, reset };
+  return {
+    formData,
+    errors,
+    isLoading,
+    submitSuccess,
+    updateField,
+    handleSubmit,
+    reset,
+  };
 }

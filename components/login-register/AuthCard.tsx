@@ -69,11 +69,6 @@ export function AuthCard() {
           )}
         </div>
       </div>
-
-      {/* Footer */}
-      <p className="mt-6 text-center text-xs text-stone-600">
-        © {new Date().getFullYear()} Nexus Inc. · Bảo vệ bởi reCAPTCHA
-      </p>
     </div>
   );
 }

@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import axios, { AxiosError } from "axios";
+import { useAuthContext } from "@/context/AuthProvider";
+import { User } from "@/types/user";
 
 interface AuthData {
   email: string;
@@ -10,13 +12,13 @@ interface AuthData {
 
 interface AuthResponse {
   token: string;
-  user: any;
+  user: User;
 }
 
 export function useAuth() {
   const [authLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [user, setUser] = useState<any | null>(null);
+  const { user, setUser } = useAuthContext();
 
   const api = axios.create({
     baseURL: "http://localhost:8080",

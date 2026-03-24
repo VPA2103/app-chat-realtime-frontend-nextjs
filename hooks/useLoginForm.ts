@@ -13,9 +13,6 @@ const initialData: LoginFormData = {
   rememberMe: false,
 };
 
-//
-
-//
 export function useLoginForm(router: ReturnType<typeof useRouter>) {
   const [formData, setFormData] = useState<LoginFormData>(initialData);
   const [errors, setErrors] = useState<LoginErrors>({});
