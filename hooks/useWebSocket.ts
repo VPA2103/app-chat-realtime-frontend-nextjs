@@ -1,23 +1,32 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import WSClient from "@/lib/ws";
+import WSClient, { getWSClient } from "@/lib/ws";
 
 export function useWebSocket(url: string, onMessage: (data: any) => void) {
   const wsRef = useRef<WSClient | null>(null);
+  const onMessageRef = useRef(onMessage);
+
+  // luôn giữ ref mới nhất
+  useEffect(() => {
+    onMessageRef.current = onMessage;
+  }, [onMessage]);
 
   useEffect(() => {
-    const ws = new WSClient(url);
+    const ws = getWSClient(url);
     wsRef.current = ws;
 
+    // wrap stable handler
+    const stableHandler = (data: any) => onMessageRef.current(data);
+
     ws.connect();
-    ws.subscribe(onMessage);
+    ws.subscribe(stableHandler);
 
     return () => {
-      ws.unsubscribe(onMessage);
-      ws.disconnect(); // QUAN TRỌNG
+      ws.unsubscribe(stableHandler);
+      ws.disconnect();
     };
-  }, [url]);
+  }, [url]); // url thay đổi mới reconnect
 
   const send = (data: any) => {
     wsRef.current?.send(data);
