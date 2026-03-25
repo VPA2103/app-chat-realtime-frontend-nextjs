@@ -10,6 +10,8 @@ import { UserList } from "@/components/user/UserList"
 import { User } from "@/components/user/UserCard"
 import { useAuthContext } from "@/context/AuthProvider"
 import { useRouter } from "next/navigation"
+import AvatarComponent from "@/components/profile/AvatarComponent"
+import { useAuth } from "@/hooks/useAuth"
 
 // ─── Replace with your actual auth hook ──────────────────────────────────────
 const MOCK_TOKEN = "your-jwt-token-here"
@@ -17,6 +19,7 @@ const MOCK_TOKEN = "your-jwt-token-here"
 
 export default function ChatPage() {
     const { user, loading } = useAuthContext();
+    const {logout} = useAuth()
     const router = useRouter();
 
     const [selectedUser, setSelectedUser] = useState<User | null>(null)
@@ -88,6 +91,11 @@ export default function ChatPage() {
                         onSelectUser={handleSelectUser}
                     />
                 </div>
+                <div className=" ml-14 mb-6">
+
+                    <AvatarComponent data={user} onLogout={logout}/>
+                </div>
+
             </aside>
 
             {/* ── Main area ───────────────────────────────────────────────────── */}

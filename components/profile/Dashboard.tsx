@@ -12,11 +12,11 @@ export default function Dashboard() {
   const { user, logout } = useAuth();
   const router = useRouter();
 
-  useEffect(() => {
-    if (!user) {
-      router.push("/login");
-    }
-  }, [user, router]);
+  // useEffect(() => {
+  //   if (!user) {
+  //     router.push("/login");
+  //   }
+  // }, [user, router]);
 
   if (!user) {
     return (

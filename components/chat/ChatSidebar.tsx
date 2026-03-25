@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import type { Conversation } from '@/types/chat';
+import AvatarComponent from '../profile/AvatarComponent';
 
 interface ChatSidebarProps {
   isOpen: boolean;
@@ -121,26 +122,6 @@ export default function ChatSidebar({ isOpen, onClose }: ChatSidebarProps) {
         </div>
 
         {/* User Profile */}
-        <div className="px-4 py-4 border-t border-white/6">
-          <div className="flex items-center gap-3">
-            <div className="relative">
-              <div className="w-8 h-8 rounded-full bg-linear-to-br from-violet-400 to-pink-500 flex items-center justify-center text-white text-sm font-bold shadow-lg">
-                T
-              </div>
-              <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-[#0f0f13]" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-white text-xs font-semibold truncate" style={{ fontFamily: "'DM Sans', sans-serif" }}>Nguyễn Văn Tâm</p>
-              <p className="text-white/30 text-[10px]" style={{ fontFamily: "'DM Sans', sans-serif" }}>Pro Plan</p>
-            </div>
-            <button className="w-7 h-7 rounded-lg flex items-center justify-center text-white/30 hover:text-white hover:bg-white/10 transition-all">
-              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-            </button>
-          </div>
-        </div>
       </aside>
     </>
   );

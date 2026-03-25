@@ -37,15 +37,15 @@ export function useChat(token: string, targetUserID: number) {
 
   const handleSend = (content: string) => {
     // optimistic UI
-    setMessages((prev) => [
-      ...prev,
-      {
-        id: Date.now(),
-        role: "user",
-        content,
-        time: new Date().toLocaleTimeString(),
-      },
-    ]);
+    // setMessages((prev) => [
+    //   ...prev,
+    //   {
+    //     id: Date.now(),
+    //     role: "user",
+    //     content,
+    //     time: new Date().toLocaleTimeString(),
+    //   },
+    // ]);
 
     wsSend({
       type: "chat", // ← "chat" không phải "message"

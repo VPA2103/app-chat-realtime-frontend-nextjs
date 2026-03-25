@@ -24,7 +24,7 @@ export function useWebSocket(url: string, onMessage: (data: any) => void) {
 
     return () => {
       ws.unsubscribe(stableHandler);
-      ws.disconnect();
+      // ws.disconnect();
     };
   }, [url]); // url thay đổi mới reconnect
 
